@@ -1,17 +1,17 @@
 # github-copilot-demo
 
 ###To download the active mq and start
-Download ActiveMQ binary from here.[http://activemq.apache.org/download.html]
-Unzip your bundle, and Open Terminal.
-Set the Terminal path to ActiveMQ -> bin
-Write command ./activemq start
-Open http://localhost:8161/admin/ 
+*Download ActiveMQ binary from here.[http://activemq.apache.org/download.html]
+*Unzip your bundle, and Open Terminal.
+*Set the Terminal path to ActiveMQ -> bin
+*Write command ./activemq start
+*Open http://localhost:8161/admin/ 
 
 ## to use the mqproducer for doing the transactions for DR/CR
-http://localhost:8080/mqProducer - 
-HTTP METHOD: POST
-Sample Json Input:
-{
+*http://localhost:8080/mqProducer - 
+*HTTP METHOD: POST
+*Sample Json Input:
+`{
   "transactionId": "1",
   "transactionAmount": "100",
   "transactionDate": "02-SEP-22",
@@ -19,7 +19,7 @@ Sample Json Input:
   "transactionStatus": "OK",
   "description": "ATM WITHDRAWL",
   "customerId": "1"
-}
+}`
 
 ## to get balance for customerid -1
 http://localhost:8080/transaction/getBalance/1 
