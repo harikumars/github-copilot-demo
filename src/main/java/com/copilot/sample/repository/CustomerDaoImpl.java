@@ -1,8 +1,17 @@
 package com.copilot.sample.repository;
 
+import com.copilot.sample.model.Customer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+//Add repository configuration to CustomerDaoImpl class
+@Repository
 public class CustomerDaoImpl implements CustomerDao {
 
     //Autowire jdbctemplate
+    @Autowired
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -18,58 +27,38 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public Customer findById(String customerId) {
-        String sql = "SELECT * FROM customer WHERE customer_id = ?";
-        return jdbcTemplate.queryForObject(sql, new Object[]{customerId}, new CustomerRowMapper());
+        //create a sql query to find a customer by id
+        String sql = "SELECT * FROM customer WHERE id = ?";
+        //return the queryForObject for customer
+        return jdbcTemplate.queryForObject(sql, new CustomerRowMapper(), new Object[]{customerId});
     }
 
     @Override
     public Customer create(Customer customer) {
-        String sql = "INSERT INTO customer (customer_id, customer_name, customer_address, customer_phone, customer_email) VALUES (?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql, customer.getCustomerId(), customer.getCustomerName(), customer.getCustomerAddress(), customer.getCustomerPhone(), customer.getCustomerEmail());
+        String sql = "INSERT INTO customer (name, address, phone, email,zip,city,state) VALUES (?,?,?,?,?,?,?)";
+        jdbcTemplate.update(sql, customer.getCustomerName(), customer.getCustomerAddress(), customer.getCustomerPhone(), customer.getCustomerEmail(), customer.getCustomerZipcode(),
+                customer.getCustomerCity(), customer.getCustomerState());
         return customer;
     }
 
     @Override
     public Customer update(Customer customer) {
-        String sql = "UPDATE customer SET customer_name = ?, customer_address = ?, customer_phone = ?, customer_email = ? WHERE customer_id = ?";
-        jdbcTemplate.update(sql, customer.getCustomerName(), customer.getCustomerAddress(), customer.getCustomerPhone(), customer.getCustomerEmail(), customer.getCustomerId());
+        //create a sql query to update a customer by id using the customer object
+        String sql = "UPDATE customer SET name = ?, address = ?, phone = ?, email = ?,zip = ?,city = ?,state = ? WHERE id = ?";
+        //call the update method to update the customer using the customer object
+        jdbcTemplate.update(sql, customer.getCustomerName(), customer.getCustomerAddress(), customer.getCustomerPhone(), customer.getCustomerEmail(), customer.getCustomerZipcode(),
+                customer.getCustomerCity(), customer.getCustomerState(), customer.getCustomerId());
+        //return the customer object after the update
         return customer;
     }
 
     @Override
     public void delete(Customer customer) {
-        String sql = "DELETE FROM customer WHERE customer_id = ?";
+        //create a sql query to delete a customer using the customer object
+
+        String sql = "DELETE FROM customer WHERE id = ?";
+        //call the update method to delete the customer using the customer object
         jdbcTemplate.update(sql, customer.getCustomerId());
-    }
-
-    @Override
-    public void deleteById(String customerId) {
-        String sql = "DELETE FROM customer WHERE customer_id = ?";
-        jdbcTemplate.update(sql, customerId);
-    }
-
-    @Override
-    public List<Customer> findByName(String customerName) {
-        String sql = "SELECT * FROM customer WHERE customer_name = ?";
-        return jdbcTemplate.query(sql, new Object[]{customerName}, new CustomerRowMapper());
-    }
-
-    @Override
-    public List<Customer> findByAddress(String customerAddress) {
-        String sql = "SELECT * FROM customer WHERE customer_address = ?";
-        return jdbcTemplate.query(sql, new Object[]{customerAddress}, new CustomerRowMapper());
-    }
-
-    @Override
-    public List<Customer> findByPhone(String customerPhone) {
-        String sql = "SELECT * FROM customer WHERE customer_phone = ?";
-        return jdbcTemplate.query(sql, new Object[]{customerPhone}, new CustomerRowMapper());
-    }
-
-    @Override
-    public List<Customer> findByEmail(String customerEmail) {
-        String sql = "SELECT * FROM customer WHERE customer_email = ?";
-        return jdbcTemplate.query(sql, new Object[]{customerEmail}, new CustomerRowMapper());
     }
 
 }

@@ -1,5 +1,7 @@
 package com.copilot.sample.service.impl;
 
+import com.copilot.sample.model.Customer;
+
 public class CustomerImpl {
 
 
