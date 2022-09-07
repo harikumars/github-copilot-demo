@@ -19,7 +19,6 @@ public class MQConsumer {
         // check if transaction type is credit
         if (transaction.getTransactionType().equals("CR")) {
             //call the transaction controller to create a new transaction
-
             transactionController.credit(transaction);
         }
         // check if transaction type is debit

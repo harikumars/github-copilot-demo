@@ -29,11 +29,12 @@ public Transaction debit(Transaction transaction) throws CustomerNotFoundExcepti
         //check if the customer is found
         if (customer != null) {
             //create a sql query to get the amount in the transaction object for a customer
-            String sql = "SELECT amount FROM transaction WHERE customerId = ?";
+            String sql = "SELECT amount FROM transaction WHERE customerId = ? ORDER BY id DESC LIMIT 1";
             //get the amount from the transaction object
             Double amount = jdbcTemplate.queryForObject(sql, new Object[]{transaction.getCustomerId()}, Double.class);
-            //check if the amount is greater than 0
-            if (amount >= 0) {
+            //check if the amount is greater than 101
+
+            if (amount >= 101) {
                 //subtract the amount from the transaction object
                 Double newAmount= amount - Double.valueOf(transaction.getTransactionAmount());
 
@@ -45,7 +46,7 @@ public Transaction debit(Transaction transaction) throws CustomerNotFoundExcepti
                 return transaction;
                 } else {
                 //throw an exception if the amount is less than 0
-                throw new CustomerNotFoundException("Insufficient Balance");
+                throw new CustomerNotFoundException("No sufficient balance");
             }
 
 
@@ -63,7 +64,7 @@ public Transaction debit(Transaction transaction) throws CustomerNotFoundExcepti
         //check if the customer is found
         if (customer != null) {
             //create a sql query to get the amount in the transaction object for a customer
-            String sql = "SELECT amount FROM transaction WHERE customerId = ?";
+            String sql = "SELECT amount FROM transaction WHERE customerId = ? ORDER BY id DESC LIMIT 1";
             //get the amount from the transaction object using the transactionrowmapper
 
             //surround with try catch block
@@ -82,9 +83,6 @@ public Transaction debit(Transaction transaction) throws CustomerNotFoundExcepti
                 //return the transaction object after the insert
                 return transaction;
 
-            } else {
-                //throw an exception if the amount is less than 0
-                throw new CustomerNotFoundException("Insufficient Balance");
             }
             } catch (EmptyResultDataAccessException e) {
                 //create a sql query to insert the transaction customer id,date,type,description and above amount in the repository for a customer
@@ -101,7 +99,7 @@ public Transaction debit(Transaction transaction) throws CustomerNotFoundExcepti
             //throw an exception if the customer is not found
             throw new CustomerNotFoundException("Customer not found");
         }
-
+        return transaction;
     }
 
     @Override
