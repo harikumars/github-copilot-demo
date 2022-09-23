@@ -1,9 +1,12 @@
 package com.copilot.sample.controller;
 
+import com.copilot.sample.configuration.ServiceResponse;
 import com.copilot.sample.model.Customer;
 import com.copilot.sample.repository.CustomerDao;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,22 +31,20 @@ public class CustomerController {
         return customerRepository.findAll();
     }
     //annotation to define postmapping and body parameter
-    @PostMapping("/customer")
-    public Customer createCustomer(@RequestBody Customer customer) {
-        //validate the customer name phone and email with the list of customer object in the repository
+    @PostMapping(value = "/createCustomer", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = { MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<ServiceResponse> createCustomer(@RequestBody Customer customer) {
+        //validate the customer  phone and email with the list of customer object in the repository
         for (Customer c : customerRepository.findAll()) {
-            if (c.getCustomerName().equals(customer.getCustomerName())) {
-                throw new IllegalArgumentException("Customer Name already exists");
-            }
             if (c.getCustomerPhone().equals(customer.getCustomerPhone())) {
                 throw new IllegalArgumentException("Customer Phone already exists");
             }
-            if (c.getCustomerEmail().equals(customer.getCustomerEmail())) {
-                throw new IllegalArgumentException("Customer Email already exists");
-            }
         }
         //call the create method to create a new customer
-        return customerRepository.create(customer);
+        Customer cust= customerRepository.create(customer);
+        //return the response entity after creating the customer
+        return ResponseEntity.ok(new ServiceResponse("success","Customer added", cust));
+
 
     }
 

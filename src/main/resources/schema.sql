@@ -28,3 +28,17 @@ CREATE TABLE IF NOT EXISTS transaction (
   PRIMARY KEY (id),
   FOREIGN KEY (customerId) REFERENCES customer(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--create a table from trades with transactionType,tradeId as primary key,buyer,seller,amount,currency,tradeDate,status
+CREATE TABLE IF NOT EXISTS trades (
+  transactionType INT NOT NULL,
+  tradeId INT NOT NULL,
+  buyer VARCHAR(255) NOT NULL,
+  seller VARCHAR(255) NOT NULL,
+  amount VARCHAR(255) NOT NULL,
+  currency VARCHAR(255) NOT NULL,
+  tradeDate VARCHAR(255) NOT NULL,
+  status VARCHAR(255) NOT NULL,
+  PRIMARY KEY (transactionType,tradeId)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+

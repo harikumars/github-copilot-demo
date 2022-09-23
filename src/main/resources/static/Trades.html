@@ -1,0 +1,175 @@
+//add the title as Co-pilot Trade page and add the bootstrap css and js files
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Co-pilot Trade page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Co-pilot Trade page</h1>
+                <form id="tradeForm">
+
+                    <div class="form-group">
+                        //create a dropdown for transaction type
+                        <n></n>
+                        <label for="transaction">Transaction Type:</label>
+                        <select class="form-control" id="transaction" name="transaction">
+                            <option value="New-Trade">New-Trade</option>
+                            <option value="Amendment">Amendment</option>
+                            <option value="Increase">Increase</option>
+                            <option value="Termination">Termination</option>
+                            <option value="Exit">Exit</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tradeId">Trade ID:</label>
+                        <input type="text" class="form-control" id="tradeId" name="tradeId">
+                    </div>
+
+                    <div class="form-group">
+                        //create a dropdown for buyer
+                        <label for="buyer">Buyer:</label>
+                        <select class="form-control" id="buyer" name="buyer">
+                            <option value="DTCC">DTCC</option>
+                            <option value="LEI">LEI</option>
+                            <option value="SWIFTBIC">SWIFTBIC</option>
+                            <option value="CICI">CICI</option>
+                            <option value="AVOX">AVOX</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        //create a dropdown for seller
+                        <label for="seller">Seller:</label>
+                        <select class="form-control" id="seller" name="seller">
+                            <option value="DTCC">DTCC</option>
+                            <option value="LEI">LEI</option>
+                            <option value="SWIFTBIC">SWIFTBIC</option>
+                            <option value="CICI">CICI</option>
+                            <option value="AVOX">AVOX</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="amount">Trade Amount:</label>
+                        <input type="text" class="form-control" id="amount" name="amount">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tradeDate">Trade Date:</label>
+                        // add the trade date as a date picker and add the bootstrap css and js files
+                        // input type as the date picker
+                        <input type="date" class="form-control" id="tradeDate" name="tradeDate">
+
+                        // convert the date to a string
+                        <script>
+                            var today = new Date();
+                            var dd = String(today.getDate()).padStart(2, '0');
+                            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                            var yyyy = today.getFullYear();
+
+                            today = yyyy + '-' + mm + '-' + dd;
+                            document.getElementById("tradeDate").value = today;
+                        </script>
+
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="currency">Trade Currency:</label>
+                        <input type="text" class="form-control" id="currency" name="currency">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        const form = document.getElementById('tradeForm');
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const data = new FormData(form);
+            const value = Object.fromEntries(data.entries());
+            console.log(value);
+            fetch('/trades/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(value)
+            }).then(response => response.json())
+              //if data status is success then display the response else display the error message
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert(data.message);
+                    } else {
+                        alert(data.message);
+                    }
+                });
+        });
+    </script>
+
+    // add a table to show all trades with endpoint as /trades/getAll
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Trades</h1>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Transaction Type</th>
+                            <th>Trade ID</th>
+                            <th>Buyer</th>
+                            <th>Seller</th>
+                            <th>Trade Amount</th>
+                            <th>Trade Date</th>
+                            <th>Trade Currency</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="trade : ${trades}">
+                            <td th:text="${trade.transaction}"></td>
+                            <td th:text="${trade.tradeId}"></td>
+                            <td th:text="${trade.buyer}"></td>
+                            <td th:text="${trade.seller}"></td>
+                            <td th:text="${trade.amount}"></td>
+                            <td th:text="${trade.tradeDate}"></td>
+                            <td th:text="${trade.currency}"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        fetch('/trades/getAll')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                const table = document.querySelector('table tbody');
+                data.forEach(trade => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${trade.transaction}</td>
+                        <td>${trade.tradeId}</td>
+                        <td>${trade.buyer}</td>
+                        <td>${trade.seller}</td>
+                        <td>${trade.amount}</td>
+                        <td>${trade.tradeDate}</td>
+                        <td>${trade.currency}</td>
+                    `;
+                    table.appendChild(row);
+                });
+            });
+    </script>
+
+</body>
+</html>
+

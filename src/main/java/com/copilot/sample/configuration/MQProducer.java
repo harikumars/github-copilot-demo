@@ -34,17 +34,12 @@ public class MQProducer {
     public String sendMessageWithReply(@RequestBody Transaction transaction) {
 
 
-        if (transaction.getTransactionType().equals("CR")) {
-            //call the transaction controller to create a new transaction
-            transactionController.credit(transaction);
-        }
+
         // check if the balance is greater than 100 and check if transaction type is debit else send a message saying as insufficient balance
-        else if (transaction.getTransactionType().equals("DR")) {
-            if (transactionController.getBalance(transaction.getCustomerId()) > 100) {
-                //call the transaction controller to create a new transaction
-                transactionController.debit(transaction);
-            } else {
-                return "Debit Amount > 100";
+       if (transaction.getTransactionType().equals("DR")) {
+            if (transactionController.getBalance(transaction.getCustomerId()) < 100) {
+
+                return "Balance is <= 100 and cannot be debited";
             }
         }
         //check if transaction type is bal

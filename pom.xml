@@ -62,6 +62,15 @@
 			<artifactId>spring-boot-starter-activemq</artifactId>
 		</dependency>
 
+	<!-- Prowide Library com.prowidesoftware/pw-swift-core-->
+		<!-- https://mvnrepository.com/artifact/com.prowidesoftware/pw-swift-core -->
+		<dependency>
+			<groupId>com.prowidesoftware</groupId>
+			<artifactId>pw-swift-core</artifactId>
+			<version>SRU2021-9.2.18</version>
+		</dependency>
+
+
 
 	</dependencies>
 

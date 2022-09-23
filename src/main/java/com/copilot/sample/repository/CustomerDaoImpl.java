@@ -44,8 +44,9 @@ public class CustomerDaoImpl implements CustomerDao {
     @Override
     public Customer update(Customer customer) {
         //create a sql query to update a customer by id using the customer object
-        String sql = "UPDATE customer SET name = ?, address = ?, phone = ?, email = ?,zip = ?,city = ?,state = ? WHERE id = ?";
-        //call the update method to update the customer using the customer object
+        String sql = "UPDATE customer SET name = ?, address = ?, phone = ?, email = ?, zip = ?, city = ?, state = ? WHERE id = ?";
+
+        //call the update method to update the customer using the customer object with the rowmapper object
         jdbcTemplate.update(sql, customer.getCustomerName(), customer.getCustomerAddress(), customer.getCustomerPhone(), customer.getCustomerEmail(), customer.getCustomerZipcode(),
                 customer.getCustomerCity(), customer.getCustomerState(), customer.getCustomerId());
         //return the customer object after the update

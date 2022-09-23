@@ -13,7 +13,6 @@ import javax.persistence.ManyToOne;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class Transaction {
     @Id
     private String transactionId;
@@ -21,7 +20,7 @@ public class Transaction {
     private String transactionDate;
     private String transactionType;
     private String transactionStatus;
-    private String description;
+    private String transactionDescription;
 //add customer id string
     private String customerId;
 }

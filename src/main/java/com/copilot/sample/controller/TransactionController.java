@@ -1,12 +1,13 @@
 package com.copilot.sample.controller;
 
+import com.copilot.sample.configuration.ServiceResponse;
 import com.copilot.sample.model.Transaction;
-import com.copilot.sample.repository.CustomerNotFoundException;
+import com.copilot.sample.exception.CustomerNotFoundException;
 import com.copilot.sample.repository.TransactionDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 //annotate rest controller
 @RestController
@@ -15,27 +16,39 @@ public class TransactionController {
     @Autowired
     private TransactionDao transactionDao;
 
+    //create a method to handle transactions with post mapping and request body annotation
+    @PostMapping(value = "/transaction", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ServiceResponse> setTransaction(@RequestBody Transaction transaction) throws CustomerNotFoundException {
+        //call the set transaction method from the transaction dao
+        transactionDao.setTransaction(transaction);
+        //return the response entity with the service response
+        return ResponseEntity.ok(new ServiceResponse("success","Transaction successfull", transaction));
+    }
 
-@PostMapping("/transaction")
-    public void credit(Transaction transaction) {
+
+@PostMapping(value="/credit", consumes = MediaType.APPLICATION_JSON_VALUE,
+        produces = { MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<ServiceResponse> credit(@RequestBody Transaction transaction) {
     try {
         Transaction transaction1 =  transactionDao.credit(transaction);
     } catch (CustomerNotFoundException e) {
         throw new RuntimeException(e);
     }
+    return ResponseEntity.ok(new ServiceResponse("success","Transaction successful and amount credited", transaction));
 }
     // debit post mapping method to create a new transaction only if the customer is listed in the repository
-    @PostMapping("/transaction/debit")
-    public void debit(Transaction transaction) {
+    @PostMapping(value="/debit",consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = { MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<ServiceResponse> debit(@RequestBody Transaction transaction) {
         try {
-            transactionDao.debit(transaction);
+            Transaction transaction1 = transactionDao.debit(transaction);
         } catch (CustomerNotFoundException e) {
             throw new RuntimeException(e);
         }
+        return ResponseEntity.ok(new ServiceResponse("success", "Transaction successful and amount debited", transaction));
     }
-
     // get balance post mapping method to get the current balance on the customer account
-    @PostMapping("/transaction/getBalance/{customerId}")
+    @GetMapping("/transaction/getBalance/{customerId}")
 
     public Double getBalance(@PathVariable("customerId") String customerId) {
         return transactionDao.getBalance(customerId);
