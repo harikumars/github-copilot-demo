@@ -26,6 +26,7 @@ public class TradesController {
     @PostMapping(value="/create" , consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = { MediaType.APPLICATION_JSON_VALUE})
     //define the method to handle the request
+    @CrossOrigin(origins = "http://localhost:4200")
     public ResponseEntity<ServiceResponse> createTrades(@RequestBody Trades trades){
         //call the service method to create the trades
         Trades trades1 = null;
@@ -41,7 +42,7 @@ public class TradesController {
     }
     //define the get mapping to handle the request
     @GetMapping("/getAll")
-    //define the method to handle the request
+    @CrossOrigin(origins = "http://localhost:4200")
     public ResponseEntity<List<Trades>> getAllTrades() {
         //call the service method to get all the trades
         List<Trades> tradesList = tradesService.findAll();
@@ -50,6 +51,7 @@ public class TradesController {
     }
     //define the get mapping to handle the request
     @GetMapping("/get/{id}")
+    @CrossOrigin(origins = "http://localhost:4200")
     //define the method to handle the request
     public ResponseEntity<Trades> getTradesById(@PathVariable("id") String id) {
         //call the service method to get the trades by id

@@ -31,6 +31,7 @@ public class CustomerController {
     //annotation to define postmapping and body parameter
     @PostMapping(value = "/createCustomer", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = { MediaType.APPLICATION_JSON_VALUE})
+    @CrossOrigin(origins = "http://localhost:4200")
     public ResponseEntity<ServiceResponse> createCustomer(@RequestBody Customer customer) {
         //validate the customer  phone and email with the list of customer object in the repository
         // add validation if customer name and email is not null
