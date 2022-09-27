@@ -75,4 +75,13 @@ public class TradesController {
         //return the response entity
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    //postionreport
+@GetMapping("/positionReport")
+public ResponseEntity<List<Trades>> positionReport() {
+    //call the service method to get all the trades
+    List<Trades> tradesList = tradesService.positionReport();
+    //return the response entity
+    return new ResponseEntity<>(tradesList, HttpStatus.OK);
+    }
 }

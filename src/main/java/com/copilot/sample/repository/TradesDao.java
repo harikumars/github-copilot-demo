@@ -20,4 +20,6 @@ public interface TradesDao {
     Trades update(Trades trades);
     //Add custom query to delete a trade
     void delete(String trades);
+
+    List<Trades> positionReport();
 }

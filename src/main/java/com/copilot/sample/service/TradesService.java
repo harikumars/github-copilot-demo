@@ -34,4 +34,8 @@ public class TradesService {
     public void delete(String trades) {
         tradesDao.delete(trades);
     }
+
+    public List<Trades> positionReport() {
+        return tradesDao.positionReport();
+    }
 }

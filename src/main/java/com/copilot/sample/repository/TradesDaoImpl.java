@@ -26,7 +26,7 @@ public class TradesDaoImpl implements TradesDao {
     //Add custom query to find trades by id
     @Override
     public Trades findById(String tradesId) {
-        return jdbcTemplate.queryForObject("select * from trades where id = ?",
+        return jdbcTemplate.queryForObject("select * from trades where tradeId = ?",
                 new Object[]{tradesId}, new TradesRowMapper());
     }
     //Add custom query to create a new trade
@@ -91,6 +91,13 @@ public class TradesDaoImpl implements TradesDao {
     @Override
     public void delete(String tradesId) {
         jdbcTemplate.update("delete from trades where tradeId = ?", tradesId);
+    }
+
+    @Override
+    public List<Trades> positionReport() {
+        //Add custom query to find trades grouped by tradeID and sum of amount where transactionType in (NEW-TRADE, AMENDMENT, INCREASE) are credits and transactionType in (EXIT, DECREASE,TERMINATION) are debits and exclude tradeId with transactionType as EXIT
+return jdbcTemplate.query("select tradeId, sum(case when transactionType in ('NEW-TRADE', 'AMENDMENT', 'INCREASE') then amount else -amount end) as amount from trades where tradeId not in (select tradeId from trades where transactionType = 'EXIT') group by tradeId", new TradesRowMapper());
+
     }
 }
 
