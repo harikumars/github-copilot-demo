@@ -35,20 +35,20 @@ public class CustomerDaoImpl implements CustomerDao {
 
     @Override
     public Customer create(Customer customer) {
-        String sql = "INSERT INTO customer (name, address, phone, email,zip,city,state) VALUES (?,?,?,?,?,?,?)";
-        jdbcTemplate.update(sql, customer.getCustomerName(), customer.getCustomerAddress(), customer.getCustomerPhone(), customer.getCustomerEmail(), customer.getCustomerZipcode(),
-                customer.getCustomerCity(), customer.getCustomerState());
+        String sql = "INSERT INTO customer (name,  email ,LEI,SWIFTBIC,CICI,DTCC,AVOX) VALUES (?,?,?,?,?,?,?)";
+        jdbcTemplate.update(sql, customer.getCustomerName(), customer.getCustomerEmail(), customer.getLei(), customer.getSwiftBic(), customer.getCici(), customer.getDtcc(), customer.getAvox());
+
         return customer;
     }
 
     @Override
     public Customer update(Customer customer) {
         //create a sql query to update a customer by id using the customer object
-        String sql = "UPDATE customer SET name = ?, address = ?, phone = ?, email = ?, zip = ?, city = ?, state = ? WHERE id = ?";
+        String sql = "UPDATE customer SET name = ?, email = ?, LEI = ?, SWIFTBIC = ?, CICI = ?, DTCC = ?, AVOX = ? WHERE id = ?";
 
         //call the update method to update the customer using the customer object with the rowmapper object
-        jdbcTemplate.update(sql, customer.getCustomerName(), customer.getCustomerAddress(), customer.getCustomerPhone(), customer.getCustomerEmail(), customer.getCustomerZipcode(),
-                customer.getCustomerCity(), customer.getCustomerState(), customer.getCustomerId());
+        jdbcTemplate.update(sql, customer.getCustomerName(), customer.getCustomerEmail(), customer.getLei(), customer.getSwiftBic(), customer.getCici(), customer.getDtcc(), customer.getAvox(), customer.getCustomerId());
+
         //return the customer object after the update
         return customer;
     }

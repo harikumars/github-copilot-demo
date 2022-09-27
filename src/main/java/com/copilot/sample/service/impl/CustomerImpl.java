@@ -1,31 +1,61 @@
 package com.copilot.sample.service.impl;
 
+//add customer service class
+import com.copilot.sample.exception.CustomerNotFoundException;
 import com.copilot.sample.model.Customer;
+import com.copilot.sample.repository.CustomerDao;
+import com.copilot.sample.service.CustomerService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-public class CustomerImpl {
+import java.util.List;
 
+@Service
 
-    //define create Customer method with validation and return Customer object
-    public Customer createCustomer(Customer customer) {
+public class CustomerImpl implements CustomerService {
 
-        if (customer.getCustomerName() == null || customer.getCustomerName().isEmpty()) {
-            throw new IllegalArgumentException("Customer name is required");
+    //Autowire customerDao
+    @Autowired
+    private CustomerDao customerDao;
+
+    @Autowired
+    public CustomerImpl(CustomerDao customerDao) {
+        this.customerDao = customerDao;
+    }
+
+    @Override
+    public List<Customer> findAll() {
+        return customerDao.findAll();
+    }
+
+    @Override
+    public Customer findById(String customerId) throws CustomerNotFoundException {
+        //call the customerDao findById method
+        Customer customer = customerDao.findById(customerId);
+        //check if the customer is null
+        if (customer == null) {
+            //throw customer not found exception
+            throw new CustomerNotFoundException("Customer not found");
         }
-        if (customer.getCustomerAddress() == null || customer.getCustomerAddress().isEmpty()) {
-            throw new IllegalArgumentException("Customer address is required");
-        }
-        if (customer.getCustomerPhone() == null || customer.getCustomerPhone().isEmpty()) {
-            throw new IllegalArgumentException("Customer phone is required");
-        }
-        if (customer.getCustomerEmail() == null || customer.getCustomerEmail().isEmpty()) {
-            throw new IllegalArgumentException("Customer email is required");
-        }
+        //return the customer object
         return customer;
     }
 
+    @Override
+    public Customer create(Customer customer) {
+        //call the customerDao create method
+        return customerDao.create(customer);
+    }
 
+    @Override
+    public Customer update(Customer customer) {
+        //call the customerDao update method
+        return customerDao.update(customer);
+    }
 
-
-
-
+    @Override
+    public void delete(Customer customer) {
+        //call the customerDao delete method
+        customerDao.delete(customer);
+    }
 }

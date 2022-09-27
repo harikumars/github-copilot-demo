@@ -12,11 +12,10 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-//Add repository configuration to TradesDaoImpl class
+//Add repository configuration for Trades class in this package
 @Repository
-//implement the interface tradesdao
+//implement the interface tradesDao for com.copilot.sample.model.Trades
 public class TradesDaoImpl implements TradesDao {
-    //Autowire JdbcTemplate
     @Autowired
     private JdbcTemplate jdbcTemplate;
     //Add custom query to find all trades
@@ -72,7 +71,7 @@ public class TradesDaoImpl implements TradesDao {
                 }); //end of resultsetextractor
 
         //if the transaction type is NEW-TRADE and equals to the trade object transaction type, throw an exception with message as TRADE is already present.
-       if(transactionType != null && transactionType.equals( trades.getTransaction())) {
+        if(transactionType != null && transactionType.equals( trades.getTransaction())) {
             throw new TransactionException("TRADE is already present.");
         }
 
@@ -94,3 +93,12 @@ public class TradesDaoImpl implements TradesDao {
         jdbcTemplate.update("delete from trades where tradeId = ?", tradesId);
     }
 }
+
+
+
+
+
+
+
+
+

@@ -1,8 +1,5 @@
 package com.copilot.sample.controller;
 
-// write a trades controller
-
-
 import com.copilot.sample.configuration.ServiceResponse;
 import com.copilot.sample.exception.TransactionException;
 import com.copilot.sample.model.Trades;
@@ -15,7 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
 //annotate the class as rest controller
+
 @RestController
 //define the base url
 @RequestMapping("/trades")
@@ -77,5 +76,3 @@ public class TradesController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
-
-

@@ -13,12 +13,13 @@ public class CustomerRowMapper implements RowMapper<Customer> {
         Customer customer = new Customer();
         customer.setCustomerId(resultSet.getString("id"));
         customer.setCustomerName(resultSet.getString("name"));
-        customer.setCustomerAddress(resultSet.getString("address"));
-        customer.setCustomerPhone(resultSet.getString("phone"));
         customer.setCustomerEmail(resultSet.getString("email"));
-        customer.setCustomerZipcode(resultSet.getString("zip"));
-        customer.setCustomerCity(resultSet.getString("city"));
-        customer.setCustomerState(resultSet.getString("state"));
+        customer.setLei(resultSet.getString("LEI"));
+        customer.setSwiftBic(resultSet.getString("SWIFTBIC"));
+
+        customer.setCici(resultSet.getString("CICI"));
+        customer.setDtcc(resultSet.getString("DTCC"));
+        customer.setAvox(resultSet.getString("AVOX"));
         return customer;
     }
 
