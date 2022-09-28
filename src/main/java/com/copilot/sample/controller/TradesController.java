@@ -30,6 +30,11 @@ public class TradesController {
     public ResponseEntity<ServiceResponse> createTrades(@RequestBody Trades trades){
         //call the service method to create the trades
         Trades trades1 = null;
+        //validate the trades object if tradeid transactiontype amount buyer seller currency are not null
+        if(trades.getTradeId()==null || trades.getTransaction()==null || trades.getAmount()==null || trades.getBuyer()==null || trades.getSeller()==null || trades.getCurrency()==null){
+            throw new IllegalArgumentException("TradeId,TransactionType,Amount,Buyer,Seller,Currency should not be null");
+        }
+
         try {
             trades1 = tradesService.create(trades);
         } catch (TransactionException e) {

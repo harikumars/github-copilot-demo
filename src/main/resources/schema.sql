@@ -1,3 +1,8 @@
+
+
+
+
+
 --MySQL Create Customer table with id, name, email, phone, address, city, state, zip as columns
 CREATE TABLE IF NOT EXISTS customer (
   id INT NOT NULL AUTO_INCREMENT,
