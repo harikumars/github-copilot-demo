@@ -1,8 +1,11 @@
 package com.copilot.sample.configuration;
 
+import com.copilot.sample.controller.TradesController;
 import com.copilot.sample.controller.TransactionController;
+import com.copilot.sample.model.Trades;
 import com.copilot.sample.model.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,30 +28,18 @@ public class MQProducer {
     @Autowired
     private Queue queue;
     
-    //autowire the transaction controller
+    //autowire the trades controller
     @Autowired
-    private TransactionController transactionController;
+    private TradesController tradesController;
 
     //send a post mapping method and @request body param as Transaction object and return a message
     @PostMapping
-    public String sendMessageWithReply(@RequestBody Transaction transaction) {
+    public String sendMessageWithReply(@RequestBody Trades trades) {
 
 
 
-        // check if the balance is greater than 100 and check if transaction type is debit else send a message saying as insufficient balance
-       if (transaction.getTransactionType().equals("DR")) {
-            if (transactionController.getBalance(transaction.getCustomerId()) < 100) {
-
-                return "Balance is <= 100 and cannot be debited";
-            }
-        }
-        //check if transaction type is bal
-        else if (transaction.getTransactionType().equals("BAL")) {
-            //call the transaction controller to get the current balance on the customer account
-            transactionController.getBalance(transaction.getCustomerId());
-        }
         //send the message to the queue
-        jmsTemplate.convertAndSend(queue, transaction);
+        jmsTemplate.convertAndSend(queue, trades);
         //return a message
         return "Message sent to the Queue Successfully";
     }/*

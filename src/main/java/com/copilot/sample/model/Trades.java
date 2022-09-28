@@ -1,9 +1,12 @@
 package com.copilot.sample.model;
 
+import lombok.ToString;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Date;
 // fields are transaction, tradeid,buyer,seller,amount,currency,tradeDate,status
+@ToString
 @Entity
 public class Trades {
     private String transaction;
@@ -94,4 +97,5 @@ public class Trades {
     public void setStatus(String status) {
         this.status = status;
     }
+
 }
