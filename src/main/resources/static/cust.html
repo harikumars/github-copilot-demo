@@ -1,0 +1,88 @@
+//add the title as Co-pilot POC Transaction page for the customer and add the bootstrap css and js files
+<head>
+    <title>Co-pilot POC Transaction page for the customer</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+// create a div container with the following fields: Transaction ID, Transaction Date, Transaction Amount, Transaction Type, Transaction Status and Transaction Description and add the bootstrap css and js files
+
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Co-pilot POC Transaction page for the customer</h1>
+                <form id="trxForm">
+                    <div class="form-group">
+                        <label for="transactionDate">Transaction Date:</label>
+                        // add the transaction date as a date picker and add the bootstrap css and js files
+                        // input type as the date picker and convert to a string
+                        <input type="date" class="form-control" id="transactionDate" name="transactionDate">
+                        // convert the date to a string
+                        <script>
+                            var today = new Date();
+                            var dd = String(today.getDate()).padStart(2, '0');
+                            var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                            var yyyy = today.getFullYear();
+
+                            today = mm + '/' + dd + '/' + yyyy;
+                            document.getElementById("transactionDate").value = today;
+                        </script>
+                    </div>
+                    <div class="form-group">
+                        <label for="transactionAmount">Transaction Amount:</label>
+                        <input type="text" class="form-control" id="transactionAmount" name="transactionAmount">
+                    </div>
+                    <div class="form-group">
+                        <label for="transactionType">Transaction Type:</label>
+                        //add a dropdown to select the transaction type with values as CR, DR and NA
+                        <select class="form-control" id="transactionType" name="transactionType">
+                            <option value="CR">CR</option>
+                            <option value="DR">DR</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="transactionStatus">Transaction Status:</label>
+                        <input type="text" class="form-control" id="transactionStatus" name="transactionStatus">
+                    </div>
+                    <div class="form-group">
+                        <label for="transactionDescription">Transaction Description:</label>
+                        <input type="text" class="form-control" id="transactionDescription" name="transactionDescription">
+                    </div>
+                    //add  customer id
+                    <div class="form-group">
+                        <label for="customerId">Customer ID:</label>
+                        <input type="text" class="form-control" id="customerId" name="customerId">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Credit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        const form = document.getElementById('trxForm');
+        form.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const data = new FormData(form);
+            const value = Object.fromEntries(data.entries());
+            console.log(value);
+            fetch('/transaction', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(value)
+            }).then(response => response.json())
+              //if data status is success then display the response else display the error message
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert(data.message);
+                    } else {
+                        alert(data.message);
+                    }
+                });
+        });
+    </script>
+</body>
